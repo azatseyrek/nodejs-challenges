@@ -1,29 +1,8 @@
-const fs = require('fs');
-// const sumFunc = require('./utils')
-const {addNote, createNote} = require('./utils');
+const chalk = require("chalk");
+const getNotes = require("./notes.js");
 
-// fs.writeFileSync('notes.txt', 'this is a text message')
+const msg = getNotes();
+console.log(msg);
 
-// fs.unlink('notes.txt', (err) => {
-//     if(err) {
-//         console.log(err);
-//     }
-//     console.log("file is deleted");
-// })
-
-// fs.appendFileSync('notes.txt', ' attention pls this is test ')
-
-// console.log(name);
-
-
-// const sum = sumFunc(4, -2)
-
-// console.log(sum);
-
-createNote('this is my note')
-
-getNotes= "this is a test message from app.js"
-
-addNote(getNotes)
-
-console.log(getNotes);
+const greenMsg = chalk.green.inverse.bold("Success!");
+console.log(greenMsg); 
