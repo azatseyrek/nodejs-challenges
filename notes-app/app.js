@@ -1,6 +1,7 @@
 const chalk = require("chalk");
-const getNotes = require("./notes.js");
+const { demandOption } = require("yargs");
 const yargs = require("yargs");
+const { getNotes, addNote, removeNote } = require("./notes.js");
 
 // const msg = getNotes();
 // console.log(msg);
@@ -19,48 +20,65 @@ const yargs = require("yargs");
 //   console.log(chalk.inverse.red("Removing Note"));
 // }
 
-
 //create add command (yargs)
 
 yargs.command({
-    command: 'add',
-    describe: 'Add a new note',
-    handler: function() {
-        console.log('Adding a new note!');
-    }
-})
-
-
+  command: "add",
+  describe: "Add a new note",
+  builder: {
+    title: {
+      describe: "Note title",
+      demandOption: true, //require(girilmesi zorunlu alan olarak belirtmek istedigimizde kullanilir)
+      type: "string",
+    },
+    body: {
+      describe: "This is desc",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler: function (argv) {
+    addNote(argv.title, argv.body);
+  },
+});
 
 //create remove command (yargs)
 
 yargs.command({
-    command: 'remove',
-    describe: 'Remove note',
-    handler: function() {
-        console.log('Removing note!');
-    }
-})
+  command: "remove",
+  describe: "Remove note",
+  builder: {
+    title: {
+      describe: "Note title",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler: function (argv) {
+    removeNote(argv.title);
+  },
+});
 
 //create list command (yargs)
 
 yargs.command({
-    command: 'list',
-    describe: 'list note',
-    handler: function() {
-        console.log('list note!');
-    }
-})
+  command: "list",
+  describe: "list note",
+  handler: function () {
+    console.log("list note!");
+  },
+});
 
 //create read command (yargs)
 
 yargs.command({
-    command: 'read',
-    describe: 'read note',
-    handler: function() {
-        console.log('read the note!');
-    }
-})
+  command: "read",
+  describe: "read note",
+  handler: function () {
+    console.log("read the note!");
+  },
+});
 
+// console.log(yargs.argv); bunu yerine yargs.parse() kullanabiliriz.
 
- console.log(yargs.argv);
+yargs.parse();
