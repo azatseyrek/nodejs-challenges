@@ -1,84 +1,70 @@
-const chalk = require("chalk");
-const { demandOption } = require("yargs");
-const yargs = require("yargs");
-const { getNotes, addNote, removeNote } = require("./notes.js");
+const chalk = require('chalk')
+const yargs = require('yargs')
+const notes = require('./notes.js')
 
-// const msg = getNotes();
-// console.log(msg);
+// Customize yargs version
+yargs.version('1.1.0')
 
-// const greenMsg = chalk.green.inverse.bold("Success!");
-// console.log(greenMsg);
-
-// console.log(process.argv[2]);
-
-// const command = process.argv[2];
-// console.log(process.argv);
-
-// if (command === "add") {
-//   console.log(chalk.blue.inverse("adding note!"));
-// } else if (command === "remove") {
-//   console.log(chalk.inverse.red("Removing Note"));
-// }
-
-//create add command (yargs)
-
+// Create add command
 yargs.command({
-  command: "add",
-  describe: "Add a new note",
-  builder: {
-    title: {
-      describe: "Note title",
-      demandOption: true, //require(girilmesi zorunlu alan olarak belirtmek istedigimizde kullanilir)
-      type: "string",
+    command: 'add',
+    describe: 'Add a new note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        },
+        body: {
+            describe: 'Note body',
+            demandOption: true,
+            type: 'string'
+        }
     },
-    body: {
-      describe: "This is desc",
-      demandOption: true,
-      type: "string",
+    handler(argv) {
+        notes.addNote(argv.title, argv.body)
+    }
+})
+
+// Create remove command
+yargs.command({
+    command: 'remove',
+    describe: 'Remove a note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
     },
-  },
-  handler: function (argv) {
-    addNote(argv.title, argv.body);
-  },
-});
+    handler(argv) {
+        notes.removeNote(argv.title)
+    }
+})
 
-//create remove command (yargs)
-
+// Create list command
 yargs.command({
-  command: "remove",
-  describe: "Remove note",
-  builder: {
-    title: {
-      describe: "Note title",
-      demandOption: true,
-      type: "string",
+    command: 'list',
+    describe: 'List your notes',
+    handler() {
+        notes.listNotes()
+    }
+})
+
+// Create read command
+yargs.command({
+    command: 'read',
+    describe: 'Read a note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
     },
-  },
-  handler: function (argv) {
-    removeNote(argv.title);
-  },
-});
+    handler(argv) {
+        notes.readNote(argv.title)
+    }
+})
 
-//create list command (yargs)
-
-yargs.command({
-  command: "list",
-  describe: "list note",
-  handler: function () {
-    console.log("list note!");
-  },
-});
-
-//create read command (yargs)
-
-yargs.command({
-  command: "read",
-  describe: "read note",
-  handler: function () {
-    console.log("read the note!");
-  },
-});
-
-// console.log(yargs.argv); bunu yerine yargs.parse() kullanabiliriz.
-
-yargs.parse();
+yargs.parse()
